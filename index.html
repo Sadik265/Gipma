@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GipMa</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ===== Startseite ===== -->
+  <div id="startseite">
+    <header>
+      <h1>GipMa</h1>
+    </header>
+    <main>
+      <button id="neuesProjektBtn" class="haupt gross">+ Neues Projekt</button>
+
+      <form id="neuesProjektForm" class="karte versteckt">
+        <label class="feld">
+          Projektname
+          <input id="projektName" type="text" placeholder="z. B. Familie Müller, Bern">
+        </label>
+        <div class="knoepfe">
+          <button type="button" id="abbrechenBtn">Abbrechen</button>
+          <button type="submit" class="haupt">Erstellen</button>
+        </div>
+      </form>
+
+      <h2 class="abschnitt">Meine Projekte</h2>
+      <div id="projektListe"></div>
+    </main>
+  </div>
+
+  <!-- ===== Projektseite ===== -->
+  <div id="projektseite" class="versteckt">
+    <header>
+      <button id="zurueckBtn" class="zurueck">‹ Projekte</button>
+      <h1 id="projektTitel"></h1>
+    </header>
+
+    <nav class="tabs">
+      <button data-bereich="innen" class="aktiv">Innen</button>
+      <button data-bereich="aussen">Aussen</button>
+      <button data-bereich="fenster">Fenster</button>
+      <button data-bereich="total">Total</button>
+    </nav>
+
+    <main>
+      <div id="positionen"></div>
+      <button id="loeschenBtn" class="gefahr">Projekt löschen</button>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

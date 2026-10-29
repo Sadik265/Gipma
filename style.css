@@ -1,0 +1,394 @@
+/* ================= Farben ================= */
+:root {
+  --bg: #f4f4f7;
+  --bg-verlauf: radial-gradient(1200px 600px at 100% -10%, #ffe3d3 0%, transparent 60%),
+                radial-gradient(900px 500px at -10% 0%, #e6e9ff 0%, transparent 55%);
+  --karte: rgba(255, 255, 255, 0.85);
+  --rand: rgba(0, 0, 0, 0.06);
+  --text: #0f1115;
+  --text-leise: #6b7280;
+  --feld: #f1f2f5;
+  --feld-fokus: #ffffff;
+  --akzent: #ff5a1f;
+  --akzent-2: #ff8a00;
+  --verlauf: linear-gradient(135deg, var(--akzent) 0%, var(--akzent-2) 100%);
+  --gefahr: #ef4444;
+  --schatten: 0 1px 2px rgba(16, 24, 40, 0.04), 0 8px 24px rgba(16, 24, 40, 0.06);
+  --radius: 20px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0b0c0f;
+    --bg-verlauf: radial-gradient(1200px 600px at 100% -10%, rgba(255, 90, 31, 0.18) 0%, transparent 60%),
+                  radial-gradient(900px 500px at -10% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 55%);
+    --karte: rgba(24, 25, 30, 0.8);
+    --rand: rgba(255, 255, 255, 0.08);
+    --text: #f5f5f7;
+    --text-leise: #9ca3af;
+    --feld: #23252c;
+    --feld-fokus: #2b2e36;
+    --schatten: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.35);
+  }
+}
+
+/* ================= Grundlagen ================= */
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: 'Inter', -apple-system, system-ui, sans-serif;
+  background: var(--bg-verlauf), var(--bg);
+  background-attachment: fixed;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+.versteckt { display: none !important; }
+
+main {
+  padding: 16px 16px 48px;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+/* ================= Kopfbereich ================= */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  padding: 28px 20px 16px;
+  max-width: 720px;
+  margin: 0 auto;
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+
+header h1 {
+  margin: 0;
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+/* Logo "GipMa" auf der Startseite mit Farbverlauf */
+#startseite header h1 {
+  font-size: 44px;
+  background: var(--verlauf);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+#startseite header h1::after {
+  content: 'Gipser- & Malerrechner';
+  display: block;
+  margin-top: 2px;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--text-leise);
+  -webkit-text-fill-color: var(--text-leise);
+}
+
+/* ================= Knöpfe ================= */
+button {
+  font-family: inherit;
+  border: none;
+  border-radius: 14px;
+  padding: 11px 16px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  background: var(--feld);
+  color: var(--text);
+  transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+button:active { transform: scale(0.97); }
+
+.haupt {
+  background: var(--verlauf);
+  color: white;
+  box-shadow: 0 6px 20px rgba(255, 90, 31, 0.35);
+}
+.haupt:hover { box-shadow: 0 8px 28px rgba(255, 90, 31, 0.45); }
+
+.gross {
+  width: 100%;
+  padding: 18px;
+  font-size: 17px;
+  border-radius: 18px;
+  margin-top: 8px;
+}
+
+.gefahr {
+  width: 100%;
+  margin-top: 24px;
+  background: transparent;
+  color: var(--gefahr);
+  border: 1px solid color-mix(in srgb, var(--gefahr) 35%, transparent);
+}
+
+.zurueck {
+  background: none;
+  padding: 0;
+  margin-bottom: 6px;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--akzent);
+}
+
+.neu {
+  background: transparent;
+  color: var(--akzent);
+  padding: 8px 0;
+}
+
+.loeschen {
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--gefahr) 12%, transparent);
+  color: var(--gefahr);
+}
+
+/* ================= Karten ================= */
+.karte {
+  background: var(--karte);
+  border: 1px solid var(--rand);
+  border-radius: var(--radius);
+  padding: 18px;
+  margin-bottom: 14px;
+  box-shadow: var(--schatten);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  animation: einblenden 0.35s ease both;
+}
+
+.karte h2 {
+  margin: 0 0 4px;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.einheit { color: var(--text-leise); font-weight: 500; font-size: 14px; }
+.info    { margin: 0 0 10px; color: var(--text-leise); font-size: 13px; }
+
+@keyframes einblenden {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ================= Eingaben ================= */
+.zeile {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+  margin: 10px 0;
+}
+.zeile label {
+  flex: 1;
+  min-width: 0;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-leise);
+}
+.zeile label span { display: block; margin: 0 0 4px 4px; }
+
+input, select {
+  width: 100%;
+  font-family: inherit;
+  padding: 12px 14px;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text);
+  background: var(--feld);
+  border: 1.5px solid transparent;
+  border-radius: 12px;
+  outline: none;
+  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+input:focus, select:focus {
+  background: var(--feld-fokus);
+  border-color: var(--akzent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--akzent) 18%, transparent);
+}
+select { margin-top: 6px; appearance: none; }
+
+.feld {
+  display: block;
+  margin: 12px 0;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-leise);
+}
+.feld input { margin-top: 6px; }
+
+/* Checkboxen als moderne Schalter */
+.check {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 8px 0;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--feld);
+  font-size: 15px;
+  font-weight: 500;
+  flex-direction: row-reverse;
+}
+.check input {
+  appearance: none;
+  width: 46px;
+  height: 28px;
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--text-leise) 35%, transparent);
+  position: relative;
+  cursor: pointer;
+  box-shadow: none;
+}
+.check input::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease;
+}
+.check input:checked { background: var(--verlauf); }
+.check input:checked::after { transform: translateX(18px); }
+
+/* ================= Ergebnisse ================= */
+.summe {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin: 12px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--rand);
+  color: var(--text-leise);
+  font-size: 14px;
+  font-weight: 500;
+}
+.summe strong {
+  margin-left: auto;
+  margin-right: 4px;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+
+.ergebnis, .zusatz { margin-top: 10px; }
+.ergebnis-zeile {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-top: 1px solid var(--rand);
+  font-size: 15px;
+}
+.ergebnis-zeile span { color: var(--text-leise); }
+
+/* Gesamt-Karte bei Fenster */
+.gesamt {
+  position: relative;
+  border: none;
+  background: var(--verlauf);
+  color: white;
+  box-shadow: 0 10px 30px rgba(255, 90, 31, 0.35);
+}
+.gesamt h2 { color: white; }
+.gesamt .ergebnis-zeile { border-color: rgba(255, 255, 255, 0.25); }
+.gesamt .ergebnis-zeile span,
+.gesamt .leer { color: rgba(255, 255, 255, 0.85); }
+
+/* ================= Tabs (Umschalter) ================= */
+.tabs {
+  position: sticky;
+  top: 96px;
+  z-index: 9;
+  display: flex;
+  gap: 4px;
+  max-width: 688px;
+  margin: 0 16px;
+  padding: 4px;
+  border-radius: 16px;
+  background: var(--feld);
+  border: 1px solid var(--rand);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+@media (min-width: 720px) {
+  .tabs { margin: 0 auto; }
+}
+.tabs button {
+  flex: 1;
+  padding: 10px;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--text-leise);
+}
+.tabs button.aktiv {
+  background: var(--karte);
+  color: var(--text);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* ================= Startseite ================= */
+.abschnitt {
+  margin: 32px 4px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-leise);
+}
+.leer { color: var(--text-leise); padding: 0 4px; }
+
+.knoepfe { display: flex; gap: 8px; justify-content: flex-end; margin-top: 14px; }
+
+.projekt {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 18px;
+  margin-bottom: 10px;
+  border-radius: 18px;
+  text-align: left;
+  background: var(--karte);
+  border: 1px solid var(--rand);
+  box-shadow: var(--schatten);
+  animation: einblenden 0.35s ease both;
+}
+.projekt strong { font-size: 16px; font-weight: 700; }
+.projekt span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-leise);
+  font-size: 13px;
+  font-weight: 500;
+}
+.projekt span::after { content: '›'; font-size: 22px; color: var(--text-leise); }
+.projekt:hover { transform: translateY(-1px); }
+/* ---------- Abfrage-Karten ---------- */
+.karte .feld span { display: block; }
+.zeile .feld { margin: 0; }
+
+.entfernen {
+  margin-top: 10px;
+  padding: 8px 0;
+  background: transparent;
+  color: var(--gefahr);
+  font-size: 14px;
+}
